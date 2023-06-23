@@ -3,6 +3,15 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    """ Loading the messages and the categories datasets.
+
+    Args:
+        messages_filepath: the file path to the messages csv file.
+        categories_filepath: the file path to the categories csv file.
+    
+    Returns:
+        df: A dataframe that containes poth messages and categories data.
+    """
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = messages.merge(categories, on=["id"])
@@ -10,6 +19,14 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    """ Cleaning the dataframe that containes messages and categories.
+
+    Args:
+        df: A dataframe that containes poth messages and categories data.
+    
+    Returns:
+        df: A cleaned Dataframe the containes each category separated in a column.
+    """
     # Naming the columns of the df with the names of the Categories
     categories = pd.Series(df['categories']).str.split(";",expand=True)
     row = categories.iloc[0]
@@ -22,11 +39,22 @@ def clean_data(df):
     df.drop("categories", axis = 1, inplace=True)
     df = pd.concat([df,categories], axis = 1,sort=False)
     df.drop_duplicates(inplace=True)
+    #dropping wrong values
+    df.drop(df[df['related'] == 2].index, inplace= True)
     return df
 
 def save_data(df, database_filename):
+    """ Saving the messages and categories DataFrame into a SQL DataBase.
+
+    Args:
+        df: A cleaned Dataframe the containes each category separated in a column.
+        database_filename: The file path for the DataBase.
+
+    Returns:
+        None
+    """
     engine = create_engine(f'sqlite:///{database_filename}')
-    df.to_sql('InsertTableName', engine, index=False)
+    df.to_sql('DisasterResponse', engine, index=False)
 
 
 def main():
