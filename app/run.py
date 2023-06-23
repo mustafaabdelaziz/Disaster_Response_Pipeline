@@ -40,6 +40,8 @@ def index():
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
+    categories_count= df.iloc[:,4:36].sum()
+    categories_list = df.iloc[:,4:36].columns
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
@@ -63,9 +65,28 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+        {
+            'data': [
+                Bar(
+                    x=categories_count,
+                    y=categories_list
+                )
+            ],
+
+            'layout': {
+                'title': 'Count of Categories',
+                'yaxis': {
+                    'title': "list"
+                },
+                'xaxis': {
+                    'title': "count"
+                }
+            }
         }
+
     ]
-    
+   
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
@@ -93,7 +114,7 @@ def go():
 
 
 def main():
-    app.run(host='0.0.0.0', port=3001, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)
 
 
 if __name__ == '__main__':
