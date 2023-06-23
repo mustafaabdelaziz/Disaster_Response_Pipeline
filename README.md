@@ -40,6 +40,8 @@ This file contains of many folders such as:
 
 ### Results:
 Managed to create a classification model that is able to classify the message categories with high accuracy and also managed to deploy a webapp that can classify any message inputed to it.
+This Project will help the governments, human rights organizations, and many other organizations to quikly responed to disasters.
+And help categories messages to understand wither it's about a Disaster or not.
 
 ### Licensing, Authors, Acknowledgements:
 Must give credit to Stack Overflow for the data. You can find the Licensing for the data and other descriptive information at the Kaggle link available. Otherwise, feel free to use the code here as you would like!
